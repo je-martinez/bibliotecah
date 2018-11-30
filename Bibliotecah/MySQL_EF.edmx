@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="admin_bibliotecahModelo.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Archivos">
+          <Key>
+            <PropertyRef Name="PkID_Archivo" />
+          </Key>
+          <Property Name="PkID_Archivo" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FkID_Carrera" Type="int" Nullable="false" />
+          <Property Name="Autor" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Fecha_Creacion" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha_Modificacion" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ruta" Type="text" Nullable="false" />
+          <Property Name="Estado" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Carreras">
+          <Key>
+            <PropertyRef Name="PkID_Carrera" />
+          </Key>
+          <Property Name="PkID_Carrera" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FkID_TipoCarrera" Type="int" Nullable="false" />
+          <Property Name="Carrera" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Configuraciones">
+          <Key>
+            <PropertyRef Name="Idconfig" />
+          </Key>
+          <Property Name="Idconfig" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Config" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Envios">
+          <Key>
+            <PropertyRef Name="PkID_Envio" />
+          </Key>
+          <Property Name="PkID_Envio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FkID_Archivo" Type="bigint" Nullable="false" />
+          <Property Name="FkID_Usuario" Type="int" Nullable="false" />
+          <Property Name="Nombre_Receptor" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Identidad_Receptor" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Correo_Receptor" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Fecha_Envio" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Historiales">
+          <Key>
+            <PropertyRef Name="PkID_Historial" />
+          </Key>
+          <Property Name="PkID_Historial" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FkID_Usuario" Type="int" Nullable="false" />
+          <Property Name="FKID_Operacion" Type="int" Nullable="false" />
+          <Property Name="FKID_Archivo" Type="bigint" Nullable="false" />
+          <Property Name="Fecha_Historial" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Observacion" Type="text" />
+        </EntityType>
+        <EntityType Name="Operaciones">
+          <Key>
+            <PropertyRef Name="PkID_Operacion" />
+          </Key>
+          <Property Name="PkID_Operacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TiposCarreras">
+          <Key>
+            <PropertyRef Name="PkID_TipoCarrera" />
+          </Key>
+          <Property Name="PkID_TipoCarrera" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="PkID_Usuario" />
+          </Key>
+          <Property Name="PkID_Usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login_Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre_Completo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="date" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="18" Nullable="false" />
+          <Property Name="Correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Administrador" Type="bit" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="Archivos_ibfk_3">
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Archivos" Type="Self.Archivos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carreras">
+              <PropertyRef Name="PkID_Carrera" />
+            </Principal>
+            <Dependent Role="Archivos">
+              <PropertyRef Name="FkID_Carrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Carreras_ibfk_1">
+          <End Role="TiposCarreras" Type="Self.TiposCarreras" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TiposCarreras">
+              <PropertyRef Name="PkID_TipoCarrera" />
+            </Principal>
+            <Dependent Role="Carreras">
+              <PropertyRef Name="FkID_TipoCarrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Envios_ibfk_1">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Envios" Type="Self.Envios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="PkID_Usuario" />
+            </Principal>
+            <Dependent Role="Envios">
+              <PropertyRef Name="FkID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historiales_ibfk_1">
+          <End Role="Operaciones" Type="Self.Operaciones" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operaciones">
+              <PropertyRef Name="PkID_Operacion" />
+            </Principal>
+            <Dependent Role="Historiales">
+              <PropertyRef Name="FKID_Operacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historiales_ibfk_2">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="PkID_Usuario" />
+            </Principal>
+            <Dependent Role="Historiales">
+              <PropertyRef Name="FkID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historiales_ibfk_3">
+          <End Role="Archivos" Type="Self.Archivos" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Archivos">
+              <PropertyRef Name="PkID_Archivo" />
+            </Principal>
+            <Dependent Role="Historiales">
+              <PropertyRef Name="FKID_Archivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="admin_bibliotecahModeloStoreContainer">
+          <EntitySet Name="Archivos" EntityType="Self.Archivos" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="Carreras" EntityType="Self.Carreras" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="Configuraciones" EntityType="Self.Configuraciones" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="Envios" EntityType="Self.Envios" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="Historiales" EntityType="Self.Historiales" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="Operaciones" EntityType="Self.Operaciones" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="TiposCarreras" EntityType="Self.TiposCarreras" Schema="admin_bibliotecah" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="admin_bibliotecah" store:Type="Tables" />
+          <AssociationSet Name="Archivos_ibfk_3" Association="Self.Archivos_ibfk_3">
+            <End Role="Carreras" EntitySet="Carreras" />
+            <End Role="Archivos" EntitySet="Archivos" />
+          </AssociationSet>
+          <AssociationSet Name="Carreras_ibfk_1" Association="Self.Carreras_ibfk_1">
+            <End Role="TiposCarreras" EntitySet="TiposCarreras" />
+            <End Role="Carreras" EntitySet="Carreras" />
+          </AssociationSet>
+          <AssociationSet Name="Envios_ibfk_1" Association="Self.Envios_ibfk_1">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Envios" EntitySet="Envios" />
+          </AssociationSet>
+          <AssociationSet Name="Historiales_ibfk_1" Association="Self.Historiales_ibfk_1">
+            <End Role="Operaciones" EntitySet="Operaciones" />
+            <End Role="Historiales" EntitySet="Historiales" />
+          </AssociationSet>
+          <AssociationSet Name="Historiales_ibfk_2" Association="Self.Historiales_ibfk_2">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Historiales" EntitySet="Historiales" />
+          </AssociationSet>
+          <AssociationSet Name="Historiales_ibfk_3" Association="Self.Historiales_ibfk_3">
+            <End Role="Archivos" EntitySet="Archivos" />
+            <End Role="Historiales" EntitySet="Historiales" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="admin_bibliotecahModelo" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Archivos">
+          <Key>
+            <PropertyRef Name="PkID_Archivo" />
+          </Key>
+          <Property Name="PkID_Archivo" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FkID_Carrera" Type="Int32" Nullable="false" />
+          <Property Name="Autor" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Creacion" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha_Modificacion" Type="DateTime" Nullable="false" />
+          <Property Name="Ruta" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Carreras" Relationship="Self.Archivos_ibfk_3" FromRole="Archivos" ToRole="Carreras" />
+          <NavigationProperty Name="Historiales" Relationship="Self.Historiales_ibfk_3" FromRole="Archivos" ToRole="Historiales" />
+        </EntityType>
+        <EntityType Name="Carreras">
+          <Key>
+            <PropertyRef Name="PkID_Carrera" />
+          </Key>
+          <Property Name="PkID_Carrera" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FkID_TipoCarrera" Type="Int32" Nullable="false" />
+          <Property Name="Carrera" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Archivos" Relationship="Self.Archivos_ibfk_3" FromRole="Carreras" ToRole="Archivos" />
+          <NavigationProperty Name="TiposCarreras" Relationship="Self.Carreras_ibfk_1" FromRole="Carreras" ToRole="TiposCarreras" />
+        </EntityType>
+        <EntityType Name="Configuraciones">
+          <Key>
+            <PropertyRef Name="Idconfig" />
+          </Key>
+          <Property Name="Idconfig" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Config" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Envios">
+          <Key>
+            <PropertyRef Name="PkID_Envio" />
+          </Key>
+          <Property Name="PkID_Envio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FkID_Archivo" Type="Int64" Nullable="false" />
+          <Property Name="FkID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Nombre_Receptor" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Identidad_Receptor" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo_Receptor" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Envio" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.Envios_ibfk_1" FromRole="Envios" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Historiales">
+          <Key>
+            <PropertyRef Name="PkID_Historial" />
+          </Key>
+          <Property Name="PkID_Historial" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FkID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="FKID_Operacion" Type="Int32" Nullable="false" />
+          <Property Name="FKID_Archivo" Type="Int64" Nullable="false" />
+          <Property Name="Fecha_Historial" Type="DateTime" Nullable="false" />
+          <Property Name="Observacion" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Archivos" Relationship="Self.Historiales_ibfk_3" FromRole="Historiales" ToRole="Archivos" />
+          <NavigationProperty Name="Operaciones" Relationship="Self.Historiales_ibfk_1" FromRole="Historiales" ToRole="Operaciones" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.Historiales_ibfk_2" FromRole="Historiales" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Operaciones">
+          <Key>
+            <PropertyRef Name="PkID_Operacion" />
+          </Key>
+          <Property Name="PkID_Operacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Historiales" Relationship="Self.Historiales_ibfk_1" FromRole="Operaciones" ToRole="Historiales" />
+        </EntityType>
+        <EntityType Name="TiposCarreras">
+          <Key>
+            <PropertyRef Name="PkID_TipoCarrera" />
+          </Key>
+          <Property Name="PkID_TipoCarrera" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Carreras" Relationship="Self.Carreras_ibfk_1" FromRole="TiposCarreras" ToRole="Carreras" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="PkID_Usuario" />
+          </Key>
+          <Property Name="PkID_Usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre_Completo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="DateTime" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="18" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Administrador" Type="Boolean" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Envios" Relationship="Self.Envios_ibfk_1" FromRole="Usuarios" ToRole="Envios" />
+          <NavigationProperty Name="Historiales" Relationship="Self.Historiales_ibfk_2" FromRole="Usuarios" ToRole="Historiales" />
+        </EntityType>
+        <Association Name="Archivos_ibfk_3">
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Archivos" Type="Self.Archivos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carreras">
+              <PropertyRef Name="PkID_Carrera" />
+            </Principal>
+            <Dependent Role="Archivos">
+              <PropertyRef Name="FkID_Carrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historiales_ibfk_3">
+          <End Role="Archivos" Type="Self.Archivos" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Archivos">
+              <PropertyRef Name="PkID_Archivo" />
+            </Principal>
+            <Dependent Role="Historiales">
+              <PropertyRef Name="FKID_Archivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Carreras_ibfk_1">
+          <End Role="TiposCarreras" Type="Self.TiposCarreras" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TiposCarreras">
+              <PropertyRef Name="PkID_TipoCarrera" />
+            </Principal>
+            <Dependent Role="Carreras">
+              <PropertyRef Name="FkID_TipoCarrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Envios_ibfk_1">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Envios" Type="Self.Envios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="PkID_Usuario" />
+            </Principal>
+            <Dependent Role="Envios">
+              <PropertyRef Name="FkID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historiales_ibfk_1">
+          <End Role="Operaciones" Type="Self.Operaciones" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operaciones">
+              <PropertyRef Name="PkID_Operacion" />
+            </Principal>
+            <Dependent Role="Historiales">
+              <PropertyRef Name="FKID_Operacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historiales_ibfk_2">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="PkID_Usuario" />
+            </Principal>
+            <Dependent Role="Historiales">
+              <PropertyRef Name="FkID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="admin_bibliotecahEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Archivos" EntityType="Self.Archivos" />
+          <EntitySet Name="Carreras" EntityType="Self.Carreras" />
+          <EntitySet Name="Configuraciones" EntityType="Self.Configuraciones" />
+          <EntitySet Name="Envios" EntityType="Self.Envios" />
+          <EntitySet Name="Historiales" EntityType="Self.Historiales" />
+          <EntitySet Name="Operaciones" EntityType="Self.Operaciones" />
+          <EntitySet Name="TiposCarreras" EntityType="Self.TiposCarreras" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="Archivos_ibfk_3" Association="Self.Archivos_ibfk_3">
+            <End Role="Carreras" EntitySet="Carreras" />
+            <End Role="Archivos" EntitySet="Archivos" />
+          </AssociationSet>
+          <AssociationSet Name="Historiales_ibfk_3" Association="Self.Historiales_ibfk_3">
+            <End Role="Archivos" EntitySet="Archivos" />
+            <End Role="Historiales" EntitySet="Historiales" />
+          </AssociationSet>
+          <AssociationSet Name="Carreras_ibfk_1" Association="Self.Carreras_ibfk_1">
+            <End Role="TiposCarreras" EntitySet="TiposCarreras" />
+            <End Role="Carreras" EntitySet="Carreras" />
+          </AssociationSet>
+          <AssociationSet Name="Envios_ibfk_1" Association="Self.Envios_ibfk_1">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Envios" EntitySet="Envios" />
+          </AssociationSet>
+          <AssociationSet Name="Historiales_ibfk_1" Association="Self.Historiales_ibfk_1">
+            <End Role="Operaciones" EntitySet="Operaciones" />
+            <End Role="Historiales" EntitySet="Historiales" />
+          </AssociationSet>
+          <AssociationSet Name="Historiales_ibfk_2" Association="Self.Historiales_ibfk_2">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Historiales" EntitySet="Historiales" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="admin_bibliotecahModeloStoreContainer" CdmEntityContainer="admin_bibliotecahEntities">
+          <EntitySetMapping Name="Archivos">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Archivos">
+              <MappingFragment StoreEntitySet="Archivos">
+                <ScalarProperty Name="PkID_Archivo" ColumnName="PkID_Archivo" />
+                <ScalarProperty Name="FkID_Carrera" ColumnName="FkID_Carrera" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_Creacion" ColumnName="Fecha_Creacion" />
+                <ScalarProperty Name="Fecha_Modificacion" ColumnName="Fecha_Modificacion" />
+                <ScalarProperty Name="Ruta" ColumnName="Ruta" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carreras">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Carreras">
+              <MappingFragment StoreEntitySet="Carreras">
+                <ScalarProperty Name="PkID_Carrera" ColumnName="PkID_Carrera" />
+                <ScalarProperty Name="FkID_TipoCarrera" ColumnName="FkID_TipoCarrera" />
+                <ScalarProperty Name="Carrera" ColumnName="Carrera" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Configuraciones">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Configuraciones">
+              <MappingFragment StoreEntitySet="Configuraciones">
+                <ScalarProperty Name="Idconfig" ColumnName="Idconfig" />
+                <ScalarProperty Name="Config" ColumnName="Config" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Envios">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Envios">
+              <MappingFragment StoreEntitySet="Envios">
+                <ScalarProperty Name="PkID_Envio" ColumnName="PkID_Envio" />
+                <ScalarProperty Name="FkID_Archivo" ColumnName="FkID_Archivo" />
+                <ScalarProperty Name="FkID_Usuario" ColumnName="FkID_Usuario" />
+                <ScalarProperty Name="Nombre_Receptor" ColumnName="Nombre_Receptor" />
+                <ScalarProperty Name="Identidad_Receptor" ColumnName="Identidad_Receptor" />
+                <ScalarProperty Name="Correo_Receptor" ColumnName="Correo_Receptor" />
+                <ScalarProperty Name="Fecha_Envio" ColumnName="Fecha_Envio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Historiales">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Historiales">
+              <MappingFragment StoreEntitySet="Historiales">
+                <ScalarProperty Name="PkID_Historial" ColumnName="PkID_Historial" />
+                <ScalarProperty Name="FkID_Usuario" ColumnName="FkID_Usuario" />
+                <ScalarProperty Name="FKID_Operacion" ColumnName="FKID_Operacion" />
+                <ScalarProperty Name="FKID_Archivo" ColumnName="FKID_Archivo" />
+                <ScalarProperty Name="Fecha_Historial" ColumnName="Fecha_Historial" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operaciones">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Operaciones">
+              <MappingFragment StoreEntitySet="Operaciones">
+                <ScalarProperty Name="PkID_Operacion" ColumnName="PkID_Operacion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TiposCarreras">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.TiposCarreras">
+              <MappingFragment StoreEntitySet="TiposCarreras">
+                <ScalarProperty Name="PkID_TipoCarrera" ColumnName="PkID_TipoCarrera" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="admin_bibliotecahModelo.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="PkID_Usuario" ColumnName="PkID_Usuario" />
+                <ScalarProperty Name="Login_Name" ColumnName="Login_Name" />
+                <ScalarProperty Name="Nombre_Completo" ColumnName="Nombre_Completo" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Administrador" ColumnName="Administrador" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

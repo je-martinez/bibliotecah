@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<misconfig>
+  <rutaserver>C:\Users\Jose E. Martinez\Documents\ServidorLocal</rutaserver>
+  <smtps>smtp.mail.com</smtps>
+  <smtpu>josemartinezchevez@mail.com</smtpu>
+  <smtpp>holacomoestas</smtpp>
+</misconfig>
